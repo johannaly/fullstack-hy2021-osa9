@@ -1,6 +1,22 @@
 type Result = string;
 type Bmi = number;
 
+interface Measurements {
+    height: number,
+    weight: number
+}
+
+const ParseArgumentsMeasurements = (args: Array<string>): Measurements => {
+    if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
+        return {
+          height: Number(args[2]),
+          weight: Number(args[3])
+        }
+      } else {
+        throw new Error('Provided values were not numbers!');
+      }
+}
+
 const calculateBmi = (height: number, weight: number) : Result => {
     const heightInM = height/100; 
     const bmi = weight/(heightInM * heightInM);
@@ -24,4 +40,9 @@ const calculateBmi = (height: number, weight: number) : Result => {
     }
 }
 
-console.log(calculateBmi(180, 74))
+try {
+    const { height, weight } = ParseArgumentsMeasurements(process.argv);
+    console.log(calculateBmi(height, weight));
+} catch (e) {
+    console.log("Something went wrong, message: ", e.message);
+}
