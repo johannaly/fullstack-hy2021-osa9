@@ -14,8 +14,7 @@ interface RecivedValues {
 }
 
 const ParseArguments = (args: Array<string>) : RecivedValues => {
-    const periodLength: number = args.length - 3;
-    const target: number = Number(args[2]);
+    const target = Number(args[2]);
     const dailyExerciseHours: Array<number> = [];
     
     for (let i = 3; i <= args.length - 1; i++) {
@@ -28,8 +27,8 @@ const ParseArguments = (args: Array<string>) : RecivedValues => {
     return {
         dailyExerciseHours: dailyExerciseHours,
         target: target
-    }
-}
+    };
+};
 
 
 type Target = number;
@@ -52,19 +51,19 @@ const calculateExercises = (dailyExerciseHours: Array<number>, target: Target) :
         return 2;
     } else if (average < 1) {
         return 3;
-    } else if (average >= 3) {
+    } else {
         return 1;   
     }
-}
+};
  const ratingDescription = (rating: number) : ResultMessage => {
     if (rating === 3) {
          return "You could do better!";
      } else if (rating === 2) {
          return "Not too bad but could be better!";
-     } else if (rating === 1) {
+     } else {
          return "Nice job, keep it like that!";
      }
- }
+ };
 
  return {
     periodLength: periodLength,
@@ -74,14 +73,15 @@ const calculateExercises = (dailyExerciseHours: Array<number>, target: Target) :
     ratingDescription: ratingDescription (rating (average)),
     target: target,
     average: average
- }
-}
+ };
+};
 
 try {
     const { dailyExerciseHours, target } = ParseArguments(process.argv);
     console.log(calculateExercises(dailyExerciseHours, target));
-} catch (e) {
-    console.log("Error, something went wrong, message: ", e.message);
+} catch (e: unknown) {
+    const message = (e instanceof Error) ? e.message : "unknown";
+    console.log("Error, something went wrong, message: ", message);
 }
 
 
