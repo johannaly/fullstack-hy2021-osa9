@@ -13,21 +13,31 @@ interface RecivedValues {
     target: number
 }
 
-const ParseArguments = (args: Array<string>) : RecivedValues => {
-    const target = Number(args[2]);
+const ParseArguments = (daily_exercises: Array<number>, target: number) : RecivedValues => {
+   if(!isNaN(Number(target))){
+       target = Number(target);
+   } else {
+    throw new Error('Malformated parameters');
+   }
+
     const dailyExerciseHours: Array<number> = [];
     
-    for (let i = 3; i <= args.length - 1; i++) {
-        if (!isNaN(Number(args[i]))) {
-            dailyExerciseHours.push(Number(args[i]));
+    for (let i = 3; i <= daily_exercises.length - 1; i++) {
+        if (!isNaN(Number(daily_exercises[i]))) {
+            dailyExerciseHours.push(Number(daily_exercises[i]));
         } else {
-            throw new Error('Provided values were not numbers!'); 
+            throw new Error('Malformated parameters'); 
         }
     }
-    return {
-        dailyExerciseHours: dailyExerciseHours,
-        target: target
-    };
+
+    if (dailyExerciseHours.length === 0 || target === undefined) {
+         throw new Error('parameters missing'); 
+    } else {
+        return {
+            dailyExerciseHours: dailyExerciseHours,
+            target: target
+        };
+    }
 };
 
 
@@ -76,12 +86,29 @@ const calculateExercises = (dailyExerciseHours: Array<number>, target: Target) :
  };
 };
 
-try {
-    const { dailyExerciseHours, target } = ParseArguments(process.argv);
-    console.log(calculateExercises(dailyExerciseHours, target));
-} catch (e: unknown) {
-    const message = (e instanceof Error) ? e.message : "unknown";
-    console.log("Error, something went wrong, message: ", message);
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const CalcEx = (data: any) => {
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+        const dailyExerciseHours = data.exercises.daily_exercises;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+        const target: number = data.exercises.target;
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if(dailyExerciseHours.length === 0 || target === undefined) {
+            return {
+                "error": "Parameters missing"
+            };
+        } else {
+            ParseArguments(dailyExerciseHours, target);
+            return calculateExercises(dailyExerciseHours, target); 
+        }
+       
+    } catch (e: unknown) {
+        return {
+            "error": "Malformatted parameters"
+        };
+    }
+};
 
 
