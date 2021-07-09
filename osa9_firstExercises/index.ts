@@ -20,18 +20,18 @@ app.get('/bmi', (req, res) => {
 });
 
 app.post('/exercises', (req, res) => {
-    //const { daily_exercises, target } = req.body
-   // console.log(req.body)
-    let data = {
+    const data = {
         'exercises': {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
             'daily_exercises': req.body.daily_exercises,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
             'target': req.body.target
         }
-    }
+    };
    // console.log("data " + data.exercises.daily_exercises + data.exercises.target)
     console.log (CalcEx(data));
     res.send(CalcEx(data));
-})
+});
 
 const PORT = 3003;
 
