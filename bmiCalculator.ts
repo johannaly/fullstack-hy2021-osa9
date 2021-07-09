@@ -21,7 +21,7 @@ const ParseArgumentsMeasurements = (height: number, weight: number): Measurement
       } else {
         throw new Error('Provided values were not numbers!');
       }
-}
+};
 
 const calculateBmi = (height: number, weight: number) : BmiResult => {
     const heightInM = height/100; 
