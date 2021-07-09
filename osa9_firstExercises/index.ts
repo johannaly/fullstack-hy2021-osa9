@@ -1,6 +1,6 @@
 import express from 'express';
 import { bmiCalc } from './bmiCalculator';
-import { CalcEx } from './exerciseCalculator'
+import { CalcEx } from './exerciseCalculator';
 
 const app = express();
 app.use(express.json());
@@ -10,14 +10,14 @@ app.get('/hello', (_req, res) => {
 });
 
 app.get('/bmi', (req, res) => {
-   let data = {
+   const data = {
        "measures": {
            "height": req.query.height,
            "weight": req.query.weight
        }
-   }
+   };
   res.send(bmiCalc(data));
-})
+});
 
 app.post('/exercises', (req, res) => {
     //const { daily_exercises, target } = req.body
