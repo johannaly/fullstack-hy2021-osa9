@@ -7,4 +7,5 @@ const getDiagnoses = (): Array<Diagnoses> => {
     return diagnoses;
 };
 
+
 export default { getDiagnoses };
